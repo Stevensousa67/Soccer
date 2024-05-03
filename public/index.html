@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+  <script src="/javascripts/bootstrap.min.js"></script>
+  <title>Home</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand-lg bg-white">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><img id="logo" src="/images/images.png" alt="Home" style="width: 35px; height: 35px;"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav me-auto">
+          <!-- Links for authenticated users -->
+          <a class="nav-link active d-none" href="/scoreboard" id="scoreboardLink">Scoreboard</a>
+          <a class="nav-link active d-none" href="/myTeamsStats" id="myStatsLink">My Team's Stats</a>
+        </div>
+        <div class="navbar-nav ml-auto" id="authButtons">
+          <!-- Buttons for when user is not signed in -->
+          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2" onclick="window.location.href='/login'">Login</button>
+          <button type="button" class="btn btn-success ml-1 mx-1" onclick="window.location.href='/signUp'">Sign
+            Up</button>
+        </div>
+        <!-- Buttons for when user is signed in (initially hidden) -->
+        <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
+          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+            onclick="window.location.href='/myProfile'">My Profile</button>
+          <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1">
+    <div class="container">
+      <h1>Soccer Scores</h1>
+      <!-- Your main content here -->
+    </div>
+  </main>
+
+  <footer class="text-center mt-auto py-3">
+    <div class="container">
+      <p class="mb-1">&copy; 2024 Created by: <a href="https://github.com/Stevensousa67"
+          class="text-decoration-none">Steven
+          Sousa</a>, <a href="https://github.com/j5evans" class="text-decoration-none">James Evans</a>, <a
+          href="https://github.com/zachhill7714" class="text-decoration-none">Zarchary Hill</a>. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="/javascripts/index.js"></script>
+</body>
+
+</html>

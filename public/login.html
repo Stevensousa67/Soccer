@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-3">
+                <div class="text-center mb-3">
+                    <img src="/images/images.png" alt="Tournament Logo" id="tournamentLogo" class="img-fluid" style="width: 70px; height: 70px;">
+                </div>
+                <h1 class="card-title text-center mb-3 fs-4 fw-light">Login to Soccer Info</h1>
+                <div class="card">
+                    <div class="card-body text-dark bg-light">
+                        <form id="signInForm" action="/login" method="POST">
+                            <div class="mb-3">
+                                <label for="username">Username </label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                                <div class="invalid-feedback">Please enter a username.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password </label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                            </div>
+                            <div class="text-center mb-3">
+                                <button type="submit" class="btn btn-success btn-block w-100" id="submitButton">Sign In</button>
+                            </div>
+                        </form>
+                        <p class="text-center"><a href="/resetPassword" class="text-decoration-none">Forgot Password?</a></p>
+                        <p class="text-center">Not Registered? <a href="/signUp" class="text-decoration-none">Sign Up!</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/javascripts/login.js"></script>
+</body>
+
+</html>

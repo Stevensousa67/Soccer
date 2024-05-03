@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-3">
+                <div class="text-center mb-3">
+                    <img src="/images/images.png" alt="Tournament Logo" id="tournamentLogo" class="img-fluid" style="width: 70px; height: 70px;">
+                    <img src="" alt="Team Logo" id="teamLogo" class="img-fluid" style="width: 70px; height: 70px; display: none; vertical-align: middle;">
+                </div>
+                <h1 class="card-title text-center mb-3 fs-4 fw-light">Sign Up for Soccer Info</h1>
+                <div class="card">
+                    <div class="card-body text-dark bg-light">
+                        <form id="signupForm" action="/signup" method="POST">
+                            <div class="mb-3">
+                                <label for="username">Enter a username </label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                                <div class="invalid-feedback">Please enter a username.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Enter a password </label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                            </div>
+                            <div id="dropdownFields" style="display: none;">
+                                <div class="mb-3">
+                                    <label for="tournament">Select a tournament</label>
+                                    <select class="form-select" id="tournament" name="tournament">
+                                        <option value=""></option>
+                                        <!-- Options will be dynamically added here -->
+                                    </select>
+                                    <div class="invalid-feedback" id="tournamentError">Please select a tournament.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="team">Select a team</label>
+                                    <select class="form-select" id="team" name="team" disabled>
+                                        <option value=""></option>
+                                        <!-- Options will be dynamically added here -->
+                                    </select>
+                                    <div class="invalid-feedback" id="teamError">Please select a team.</div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-3" id="buttonGroup">
+                                <button type="button" class="btn btn-primary btn-block w-100"
+                                    id="nextButton">Next</button>
+                            </div>
+                            <div class="text-center mb-3" id="submitButtonGroup" style="display: none;">
+                                <button type="button" class="btn btn-success btn-block w-100" id="submitButton">Sign
+                                    Up</button>
+                            </div>
+                            <input type="hidden" id="team_logo" name="team_logo" value="">
+                        </form>
+                        <p class="text-center">Already have an account? <a href="/login">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/signUp.js"></script>
+</body>
+
+</html>

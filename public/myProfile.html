@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <title>My Profile</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img id="logo" src="/images/images.png" alt="Home"
+                    style="width: 35px; height: 35px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav me-auto">
+                    <!-- Links for authenticated users -->
+                    <a class="nav-link active d-none" href="/scoreboard" id="scoreboardLink">Scoreboard</a>
+                    <a class="nav-link active d-none" href="/myTeamsStats" id="myStatsLink">My Team's Stats</a>
+                </div>
+                <div class="navbar-nav ml-auto" id="authButtons">
+                    <!-- Buttons for when user is not signed in -->
+                    <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+                        onclick="window.location.href='/login'">Login</button>
+                    <button type="button" class="btn btn-success ml-1 mx-1"
+                        onclick="window.location.href='/signUp'">Sign
+                        Up</button>
+                </div>
+                <!-- Buttons for when user is signed in (initially hidden) -->
+                <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
+                    <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<main class="flex-grow-1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5"> <!-- Adjust the column size as needed -->
+                <h1>My Profile</h1>
+                <div class="card">
+                    <div class="card-body text-dark bg-light">
+                        <form id="myProfile" action="/saveUser" method="POST">
+                            <div class="mb-3">
+                                <label for="username">Username: </label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                                <div class="invalid-feedback">Enter a username. </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password: </label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback">Please enter a password.</div>
+                            </div>
+                            <div id="dropdownFields">
+                                <div class="mb-3">
+                                    <label for="tournament">Preferred Tournament: </label>
+                                    <select class="form-select" id="tournament" name="tournament">
+                                        <!-- Options will be dynamically added here -->
+                                    </select>
+                                    <div class="invalid-feedback" id="tournamentError">Please select a tournament.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="team">Preferred Team:</label>
+                                    <select class="form-select" id="team" name="team">
+                                        <!-- Options will be dynamically added here -->
+                                    </select>
+                                    <div class="invalid-feedback" id="teamError">Please select a team.</div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-3" id="buttonGroup">
+                                <button type="submit" class="btn btn-success btn-block w-100" id="saveButton">Save</button>
+                            </div>
+                            <input type="hidden" id="team_logo" name="team_logo" value="">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+    <footer class="text-center mt-auto py-3">
+        <div class="container">
+            <p class="mb-1">&copy; 2024 Created by: <a href="https://github.com/Stevensousa67"
+                    class="text-decoration-none">Steven
+                    Sousa</a>, <a href="https://github.com/j5evans" class="text-decoration-none">James Evans</a>, <a
+                    href="https://github.com/zachhill7714" class="text-decoration-none">Zarchary Hill</a>. All Rights
+                Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="/javascripts/myProfile.js"></script>
+</body>
+
+</html>
