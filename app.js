@@ -8,6 +8,7 @@ const { v4: uuid } = require('uuid');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
+const port = process.env.PORT || 3000;
 
 var session = require('express-session');
 var flash = require('express-flash');
