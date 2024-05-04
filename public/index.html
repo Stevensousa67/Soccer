@@ -63,37 +63,20 @@
           <!-- Repeat the below li structure dynamically based on the number of teams -->
         </ul>
       </div>
-      <!-- Second column for carousel -->
+
+      <!-- Second column for news slide -->
       <div class="col-md-4">
         <div class="d-flex align-items-center mt-2">
           <h1>News</h1>
         </div>
-        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
+        <div class="container">
+          <div class="row" id="cardRow">
+            <!-- Cards will be dynamically added here -->
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
         </div>
       </div>
 
-      <!--Third column for upcoming games-->
+      <!-- Third column for upcoming games -->
       <div class="col-md-4">
         <div class="d-flex align-items-center">
           <h1>Upcoming Games</h1>
@@ -110,11 +93,12 @@
             <span class="badge bg-secondary" id="losses">L</span>
             <span class="badge bg-secondary" id="goal_difference">GD</span>
           </li>
-          <!-- Repeat the below li structure dynamically based on the number of teams -->
+          <!-- Repeat the below li structure dynamically based on the number of games -->
         </ul>
       </div>
     </div>
   </div>
+
 
   <footer class="text-center mt-auto py-3">
     <div class="container">
