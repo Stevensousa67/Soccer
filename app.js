@@ -206,7 +206,7 @@ app.get('/myProfile', function (req, res) {
     }
 });
 
-app.get('/scoreboard', function (req, res) {
+app.get('/standings', function (req, res) {
     if (req.isAuthenticated) {
         res.sendFile(path.join(__dirname, 'public', 'scoreboard.html'));
     } else {
