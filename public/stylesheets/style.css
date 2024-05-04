@@ -1,8 +1,18 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.standings-table .header>.col {
+  flex: 1;
+  /* Each column occupies equal space */
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* Add borders for clarity */
 }
 
-a {
-  color: #00B7FF;
+.standings-table .row>.col {
+  flex: 1;
+  /* Each column occupies equal space */
+  text-align: center;
+  padding: 5px 5px;
+  /* Adjust padding here */
+  border-left: 0px solid #ccc;
+  /* Add left border for clarity */
 }
