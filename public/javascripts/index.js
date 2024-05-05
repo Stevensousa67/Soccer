@@ -102,3 +102,57 @@ function populateStandingsTable(data) {
         tableBody.appendChild(row);
     });
 }
+
+// Fetch News API data
+fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/news')
+    .then(response => {
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the JSON data
+    })
+    .then(data => {
+        // Call the function to populate the news section with the fetched data
+        populateNewsSection(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
+function populateNewsSection(data) {
+    // Get the news section
+    const newsSection = document.getElementById('news-section');
+
+    // Loop through each news item in the data and add to the news section
+    data.articles.forEach((article, index) => {
+        // Create a new card
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.style.width = '20rem';
+        card.style.marginBottom = '2rem';
+
+        // Create an image element
+        const image = document.createElement('img');
+        image.classList.add('card-img-top');
+        image.src = article.images[0].url;
+        image.alt = 'News Image';
+
+        // Create a card body
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+
+        // Create a card text
+        const cardText = document.createElement('p');
+        cardText.classList.add('card-text');
+        cardText.textContent = article.headline;
+
+        // Append the elements to the card
+        cardBody.appendChild(cardText);
+        card.appendChild(image);
+        card.appendChild(cardBody);
+
+        // Append the card to the news section
+        newsSection.appendChild(card);
+    });
+}
