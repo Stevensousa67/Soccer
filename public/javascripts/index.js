@@ -17,7 +17,7 @@ fetch('/checkAuth')
                     .then(response => {
                         if (response.ok) {
                             // Redirect to the login page after successful logout
-                            window.location.href = '/login';
+                            window.location.href = '/';
                         } else {
                             console.error('Logout failed');
                         }
@@ -129,12 +129,12 @@ function populateNewsSection(data) {
         // Create a new card
         const card = document.createElement('div');
         card.classList.add('card');
-        card.style.width = '20rem';
+        card.style.width = '100%';
         card.style.marginBottom = '2rem';
 
         // Create an image element
         const image = document.createElement('img');
-        image.classList.add('card-img-top');
+        image.classList.add('card-img-top', 'img-fluid');
         image.src = article.images[0].url;
         image.alt = 'News Image';
 
@@ -161,7 +161,7 @@ function populateNewsSection(data) {
 }
 
 // Fetch upcoming matches API data
-fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/scoreboard')
+fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/teams/7632/schedule')
     .then(response => {
         // Check if the response is successful
         if (!response.ok) {

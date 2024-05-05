@@ -46,48 +46,50 @@
   <div class="container">
     <div class="row">
       <!-- First column for standings -->
-      <div class="col-md-4">
+      <div class="col-lg-4 col-md order-1 order-md-1 order-lg-1">
         <div class="d-flex align-items-center">
           <h1>Standings</h1>
         </div>
-        <table class="table table-hover" id="standings-table">
-          <thead>
-            <tr>
-              <th class="rank-header"></th>
-              <th class="team-header"></th>
-              <th class="mp-header">MP</th>
-              <th class="p-header">P</th>
-              <th class="w-header">W</th>
-              <th class="d-header">D</th>
-              <th class="l-header">L</th>
-              <th class="gd-header">GD</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Rows will be dynamically added here -->
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-hover" id="standings-table">
+            <thead>
+              <tr>
+                <th class="rank-header"></th>
+                <th class="team-header"></th>
+                <th class="mp-header">MP</th>
+                <th class="p-header">P</th>
+                <th class="w-header">W</th>
+                <th class="d-header">D</th>
+                <th class="l-header">L</th>
+                <th class="gd-header">GD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- Second column for news slide -->
-      <div class="col-md-4">
+      <!-- Second column for upcoming games -->
+      <div class="col-lg-4 col-md order-2 order-md-2 order-lg-2">
         <div class="d-flex align-items-center">
+          <h1>Upcoming Games</h1>
+        </div>
+      </div>
+
+      <!-- News section -->
+      <div class="col-lg-4 col-md-12 order-3 order-md-3 order-lg-3">
+        <div class="d-flex align-items-center justify-content-center">
           <h1>News</h1>
         </div>
         <div id="news-section">
           <!-- Cards will be dynamically added here -->
         </div>
       </div>
-
-      <!-- Third column for upcoming games -->
-      <div class="col-md-4">
-        <div class="d-flex align-items-center">
-          <h1>Upcoming Games</h1>
-        </div>
-
-      </div>
     </div>
   </div>
+
 
 
   <footer class="text-center mt-auto py-3">

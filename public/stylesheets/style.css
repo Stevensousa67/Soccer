@@ -4,17 +4,17 @@
 .draws-cell,
 .losses-cell,
 .goal-difference-cell {
-  text-align: center;
-  padding-left: 10px;
+  /* text-align: center; */
+  /* padding-left: 10px; */
   font-size: 14px;
 }
 
 .team-cell{
-  padding-left: 4px;
+  /* padding-left: 4px; */
 }
 
 .mp-header , .p-header, .w-header, .d-header, .l-header, .gd-header {
-  padding-left: 14px;
+  /* padding-left: 14px; */
 }
 
 .team-cell, .rank-cell {
@@ -23,4 +23,4 @@
 
 #news-section{
   margin-top: 38px;
-}
+} 
