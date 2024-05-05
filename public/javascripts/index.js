@@ -50,34 +50,55 @@ fetch('https://site.web.api.espn.com/apis/v2/sports/soccer/bra.1/standings?seaso
         console.error('There was a problem with the fetch operation:', error);
     });
 
-// Function to populate the standings table dynamically
 function populateStandingsTable(data) {
-    const standingsList = document.getElementById('standings-table'); // Select the list by its ID
+    // Get the table body
+    const tableBody = document.getElementById('standings-table').getElementsByTagName('tbody')[0];
 
-    // Loop through each team in the data and create HTML elements
+    // Loop through each team in the data and add to the table
     data.children[0].standings.entries.forEach((entry, index) => {
         const team = entry.team;
         const stats = entry.stats;
-        console.log(team, stats)
 
-        // Create li element for each team
-        const listItem = document.createElement('li');
-        listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+        // Create a new row and cells
+        const row = document.createElement('tr');
+        const rankCell = document.createElement('td');
+        rankCell.classList.add('rank-cell');
+        const teamCell = document.createElement('td');
+        teamCell.classList.add('team-cell');
+        const pointsCell = document.createElement('td');
+        pointsCell.classList.add('points-cell');
+        const matchesPlayedCell = document.createElement('td');
+        matchesPlayedCell.classList.add('matches-played-cell');
+        const winsCell = document.createElement('td');
+        winsCell.classList.add('wins-cell');
+        const drawsCell = document.createElement('td');
+        drawsCell.classList.add('draws-cell');
+        const lossesCell = document.createElement('td');
+        lossesCell.classList.add('losses-cell');
+        const goalDifferenceCell = document.createElement('td');
+        goalDifferenceCell.classList.add('goal-difference-cell');
 
-        // Populate the li element with team data
-        listItem.innerHTML = `
-            <span>${stats[10].value}</span>
-            <!-- <span><img src="${team.logos[0].href}" alt="${team.displayName}" style="width: 20px; height: 20px;"></span> -->
-            <span>${team.displayName}</span>
-            <span>${stats[3].value}</span>
-            <span>${stats[0].value}</span>
-            <span>${stats[7].value}</span>
-            <span>${stats[6].value}</span>
-            <span>${stats[1].value}</span>
-            <span>${stats[2].value}</span>
-        `;
+        // Set the text of the cells
+        rankCell.textContent = stats[10].value;
+        teamCell.textContent = team.displayName;
+        pointsCell.textContent = stats[3].value;
+        matchesPlayedCell.textContent = stats[0].value;
+        winsCell.textContent = stats[7].value;
+        drawsCell.textContent = stats[6].value;
+        lossesCell.textContent = stats[1].value;
+        goalDifferenceCell.textContent = stats[2].value;
 
-        // Append the li element to the standings list
-        standingsList.appendChild(listItem);
+        // Append the cells to the row
+        row.appendChild(rankCell);
+        row.appendChild(teamCell);
+        row.appendChild(matchesPlayedCell);
+        row.appendChild(pointsCell);
+        row.appendChild(winsCell);
+        row.appendChild(drawsCell);
+        row.appendChild(lossesCell);
+        row.appendChild(goalDifferenceCell);
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
     });
 }

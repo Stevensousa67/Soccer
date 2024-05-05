@@ -1,18 +1,22 @@
-.standings-table .header>.col {
-  flex: 1;
-  /* Each column occupies equal space */
+.matches-played-cell,
+.points-cell,
+.wins-cell,
+.draws-cell,
+.losses-cell,
+.goal-difference-cell {
   text-align: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  /* Add borders for clarity */
+  padding-left: 12px;
+  font-size: 14px;
 }
 
-.standings-table .row>.col {
-  flex: 1;
-  /* Each column occupies equal space */
-  text-align: center;
-  padding: 5px 5px;
-  /* Adjust padding here */
-  border-left: 0px solid #ccc;
-  /* Add left border for clarity */
+.team-cell{
+  padding-left: 4px;
+}
+
+.mp-header , .p-header, .w-header, .d-header, .l-header, .gd-header {
+  padding-left: 12px;
+}
+
+.team-cell, .rank-cell {
+  font-size: 14px;
 }

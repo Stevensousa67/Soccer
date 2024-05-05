@@ -50,25 +50,28 @@
         <div class="d-flex align-items-center">
           <h1>Standings</h1>
         </div>
-        <ul class="list-group list-group-flush" id="standings-table">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="badge bg-secondary" id="rank">Rank</span>
-            <span class="badge bg-secondary" id="team_logo">Team Logo</span>
-            <span class="badge bg-secondary" id="team">Team</span>
-            <span class="badge bg-secondary" id="points">P</span>
-            <span class="badge bg-secondary" id="matches_played">MP</span>
-            <span class="badge bg-secondary" id="wins">W</span>
-            <span class="badge bg-secondary" id="draws">D</span>
-            <span class="badge bg-secondary" id="losses">L</span>
-            <span class="badge bg-secondary" id="goal_difference">GD</span>
-          </li>
-          <!-- Repeat the below li structure dynamically based on the number of teams -->
-        </ul>
+        <table id="standings-table">
+          <thead>
+            <tr>
+              <th class="rank-header"></th>
+              <th class="team-header"></th>
+              <th class="mp-header">MP</th>
+              <th class="p-header">P</th>
+              <th class="w-header">W</th>
+              <th class="d-header">D</th>
+              <th class="l-header">L</th>
+              <th class="gd-header">GD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be dynamically added here -->
+          </tbody>
+        </table>
       </div>
 
       <!-- Second column for news slide -->
       <div class="col-md-4">
-        <div class="d-flex align-items-center mt-2">
+        <div class="d-flex align-items-center">
           <h1>News</h1>
         </div>
         <div class="container">
