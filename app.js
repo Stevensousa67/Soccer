@@ -84,6 +84,7 @@ app.use('/users', usersRouter);
 app.get('/checkAuth', async function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
+        console.log(user);
         try {
             const query = `SELECT team_logo FROM "capstone_users" WHERE username = $1`;
             const result = await client.query(query, [user.username]);

@@ -46,6 +46,42 @@ async function seedDatabase() {
         }
     }
 
+    // Create table for tournaments
+    const leagues = ['Brazilian Serie A', 'MLS', 'German Bundesliga', 'English Premier League', 'Spanish La Liga', 'French Ligue 1', 'Italian Serie A'];
+
+    try {
+        const createTableSql = `
+            CREATE TABLE IF NOT EXISTS tournaments (
+                id SERIAL PRIMARY KEY,
+                tournament VARCHAR(255),
+                scoreboard_api VARCHAR(255),
+                teams_api VARCHAR(255),
+                logo VARCHAR(255),
+                standings_api VARCHAR(255),
+                news_api VARCHAR(255),
+                league_id VARCHAR(100)
+            )
+        `;
+        await client.query(createTableSql);
+        const insertSql = `INSERT INTO tournaments(tournament, scoreboard_api, teams_api, logo, standings_api, news_api, league_id) VALUES($1, $2, $3, $4, $5, $6, $7)`;
+        const values1 = [leagues[0], 'https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/85.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/bra.1/standings?season=2024', 'https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/news', '630'];
+        const values2 = [leagues[1], 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/19.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/usa.1/standings?season=2024', 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/news', '770'];
+        const values3 = [leagues[2], 'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/10.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/ger.1/standings?season=2023', 'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/news', '720'];
+        const values4 = [leagues[3], 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/23.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/eng.1/standings?season=2023', 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news', '700'];
+        const values5 = [leagues[4], 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/15.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/esp.1/standings?season=2023', 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/news', '740'];
+        const values6 = [leagues[5], 'https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/9.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/fra.1/standings?season=2023', 'https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/news', '710'];
+        const values7 = [leagues[6], 'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard', 'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams', 'https://a.espncdn.com/i/leaguelogos/soccer/500/12.png', 'https://site.web.api.espn.com/apis/v2/sports/soccer/ita.1/standings?season=2023', 'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/news', '730'];
+        await client.query(insertSql, values1);
+        await client.query(insertSql, values2);
+        await client.query(insertSql, values3);
+        await client.query(insertSql, values4);
+        await client.query(insertSql, values5);
+        await client.query(insertSql, values6);
+        await client.query(insertSql, values7);
+    }
+    catch (error) {
+        console.error('Error seeding tournaments table:', error);
+    }
     await client.end();
 }
 

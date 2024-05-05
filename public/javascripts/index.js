@@ -1,6 +1,7 @@
 fetch('/checkAuth')
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         if (data.isAuthenticated) {
             document.getElementById('authButtons').classList.add('d-none'); // Hide buttons for non-authenticated users
             document.getElementById('loggedInButtons').classList.remove('d-none'); // Show buttons for authenticated users
