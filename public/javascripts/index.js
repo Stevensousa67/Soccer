@@ -143,9 +143,12 @@ function populateNewsSection(data) {
         cardBody.classList.add('card-body');
 
         // Create a card text
-        const cardText = document.createElement('p');
+        const cardText = document.createElement('a');
         cardText.classList.add('card-text');
+        cardText.href = article.links.web.href;
+        cardText.target = '_blank'; // Open link in a new tab
         cardText.textContent = article.headline;
+        cardText.style.textDecoration = 'none'; // Remove underline from link
 
         // Append the elements to the card
         cardBody.appendChild(cardText);
@@ -155,4 +158,27 @@ function populateNewsSection(data) {
         // Append the card to the news section
         newsSection.appendChild(card);
     });
+}
+
+// Fetch upcoming matches API data
+fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/scoreboard')
+    .then(response => {
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the JSON data
+    })
+    .then(data => {
+        // Call the function to populate the upcoming matches section with the fetched data
+        populateUpcomingMatchesSection(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
+function populateUpcomingMatchesSection(data) {
+    console.log(data);
+    // Get the upcoming matches section
+
 }

@@ -5,7 +5,7 @@
 .losses-cell,
 .goal-difference-cell {
   text-align: center;
-  padding-left: 12px;
+  padding-left: 10px;
   font-size: 14px;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .mp-header , .p-header, .w-header, .d-header, .l-header, .gd-header {
-  padding-left: 12px;
+  padding-left: 14px;
 }
 
 .team-cell, .rank-cell {
@@ -22,5 +22,5 @@
 }
 
 #news-section{
-  margin-bottom: 10px;
+  margin-top: 38px;
 }
