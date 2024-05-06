@@ -251,7 +251,6 @@ function populateUpcomingMatchesSection(data) {
         div2.appendChild(spanStatus);
         li.appendChild(div1);
         li.appendChild(div2);
-        console.log(div2);
         upcomingMatchesSection.appendChild(li);
     });
 }
