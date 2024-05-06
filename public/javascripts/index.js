@@ -3,6 +3,12 @@ const randomIndex = Math.floor(Math.random() * countries.length);
 const randomCountry = countries[randomIndex];
 const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? 2024 : 2023;
 
+// Function to fetch data for the selected league on navbar click
+function fetchLeagueData(league) {
+    const seasonYear = (league === 'usa' || league === 'bra') ? 2024 : 2023;
+    fetchPreferredLeagueData(league, seasonYear);
+}
+
 fetch('/checkAuth')
     .then(response => response.json())
     .then(data => {
@@ -27,18 +33,12 @@ fetch('/checkAuth')
                     .catch(error => console.error('Error during logout:', error));
             });
 
-            // Show/hide links based on authentication status
-            //document.getElementById('scoreboardLink').classList.remove('d-none');
-            //document.getElementById('myStatsLink').classList.remove('d-none');
-
             const preferredCountry = data.preferredCountry;
             const userSeasonYear = (data.preferredCountry === 'usa' || data.preferredCountry === 'bra') ? 2024 : 2023;
             fetchPreferredLeagueData(preferredCountry, userSeasonYear);
         } else {
             document.getElementById('authButtons').classList.remove('d-none'); // Show buttons for non-authenticated users
             document.getElementById('loggedInButtons').classList.add('d-none'); // Hide buttons for authenticated users
-            document.getElementById('scoreboardLink').classList.add('d-none'); // Hide Scoreboard link
-            document.getElementById('myStatsLink').classList.add('d-none'); // Hide My Team's Stats link
             fetchRandomCountryData();
         }
     });
@@ -140,6 +140,7 @@ function fetchRandomCountryData() {
 
 function populateStandingsTable(data) {
     const tableBody = document.getElementById('standings-table').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = ''; // Clear previous data
     data.children[0].standings.entries.forEach((entry, index) => {
         const team = entry.team;
         const stats = entry.stats;
@@ -186,6 +187,7 @@ function populateStandingsTable(data) {
 
 function populateNewsSection(data) {
     const newsSection = document.getElementById('news-section');
+    newsSection.innerHTML = ''; // Clear previous data
     data.articles.forEach((article, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -214,6 +216,7 @@ function populateNewsSection(data) {
 
 function populateUpcomingMatchesSection(data) {
     const upcomingMatchesSection = document.getElementById('upcomingMatches');
+    upcomingMatchesSection.innerHTML = ''; // Clear previous data
     data.events.forEach((event, index) => {
         const li = document.createElement('li');
         li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center', 'flex-column');
