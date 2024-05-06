@@ -6,7 +6,6 @@ const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? 2024 :
 fetch('/checkAuth')
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (data.isAuthenticated) {
             document.getElementById('authButtons').classList.add('d-none'); // Hide buttons for non-authenticated users
             document.getElementById('loggedInButtons').classList.remove('d-none'); // Show buttons for authenticated users
@@ -17,11 +16,9 @@ fetch('/checkAuth')
 
             // Add event listener for logout button
             document.getElementById('logOut').addEventListener('click', function () {
-                // Send request to log out the user
                 fetch('/logout')
                     .then(response => {
                         if (response.ok) {
-                            // Redirect to the login page after successful logout
                             window.location.href = '/';
                         } else {
                             console.error('Logout failed');
@@ -51,14 +48,12 @@ function fetchPreferredLeagueData(league, userSeasonYear) {
     // Fetch preferred league data as before
     fetch(`https://site.web.api.espn.com/apis/v2/sports/soccer/${league}.1/standings?season=${userSeasonYear}`)
         .then(response => {
-            // Check if the response is successful
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // Parse the JSON data
+            return response.json();
         })
         .then(data => {
-            // Populate standings table with preferred league data
             populateStandingsTable(data);
         })
         .catch(error => {
@@ -68,14 +63,12 @@ function fetchPreferredLeagueData(league, userSeasonYear) {
     // Fetch news for the preferred league
     fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league}.1/news`)
         .then(response => {
-            // Check if the response is successful
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // Parse the JSON data
+            return response.json();
         })
         .then(data => {
-            // Populate news section with preferred league data
             populateNewsSection(data);
         })
         .catch(error => {
@@ -91,7 +84,6 @@ function fetchPreferredLeagueData(league, userSeasonYear) {
             return response.json();
         })
         .then(data => {
-            // Populate upcoming matches section with preferred league data
             populateUpcomingMatchesSection(data);
         })
         .catch(error => {
@@ -100,39 +92,37 @@ function fetchPreferredLeagueData(league, userSeasonYear) {
 }
 
 function fetchRandomCountryData() {
-    // Fetch random country data as before
+    // Fetch standings for the random country
     fetch(`https://site.web.api.espn.com/apis/v2/sports/soccer/${randomCountry}.1/standings?season=${seasonYear}`)
         .then(response => {
-            // Check if the response is successful
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // Parse the JSON data
+            return response.json();
         })
         .then(data => {
-            // Populate standings table with random country data
             populateStandingsTable(data);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
 
+    // Fetch news for the random country
     fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${randomCountry}.1/news`)
         .then(response => {
-            // Check if the response is successful
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // Parse the JSON data
+            return response.json();
         })
         .then(data => {
-            // Populate news section with random country data
             populateNewsSection(data);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
 
+    // Fetch upcoming matches for the random country
     fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${randomCountry}.1/scoreboard`)
         .then(response => {
             if (!response.ok) {
@@ -141,7 +131,6 @@ function fetchRandomCountryData() {
             return response.json();
         })
         .then(data => {
-            // Populate upcoming matches section with random country data
             populateUpcomingMatchesSection(data);
         })
         .catch(error => {
@@ -151,7 +140,6 @@ function fetchRandomCountryData() {
 
 function populateStandingsTable(data) {
     const tableBody = document.getElementById('standings-table').getElementsByTagName('tbody')[0];
-    // Loop through each team in the data and add to the table
     data.children[0].standings.entries.forEach((entry, index) => {
         const team = entry.team;
         const stats = entry.stats;
@@ -237,8 +225,10 @@ function populateUpcomingMatchesSection(data) {
         imgHomeLogo.style.height = '40px';
         const spanHomeScore = document.createElement('span');
         spanHomeScore.textContent = event.competitions[0].competitors[0].score;
-        const spanDash = document.createElement('span');
-        spanDash.textContent = '   -   ';
+        const spanDash1 = document.createElement('span');
+        spanDash1.textContent = '   -   ';
+        const spanDash2 = document.createElement('span');
+        spanDash2.textContent = '   -   ';
         const spanAwayScore = document.createElement('span');
         spanAwayScore.textContent = event.competitions[0].competitors[1].score;
         const imgAwayLogo = document.createElement('img');
@@ -247,22 +237,21 @@ function populateUpcomingMatchesSection(data) {
         imgAwayLogo.style.height = '40px';
         div1.appendChild(imgHomeLogo);
         div1.appendChild(spanHomeScore);
-        div1.appendChild(spanDash);
+        div1.appendChild(spanDash1);
         div1.appendChild(spanAwayScore);
         div1.appendChild(imgAwayLogo);
         const div2 = document.createElement('div');
         div2.classList.add('text-center');
-        const spanDate = document.createElement('span');
-        spanDate.textContent = event.date;
         const spanLocation = document.createElement('span');
         spanLocation.textContent = event.venue.displayName;
         const spanStatus = document.createElement('span');
         spanStatus.textContent = event.status.type.detail;
-        div2.appendChild(spanDate);
         div2.appendChild(spanLocation);
+        div2.appendChild(spanDash2);
         div2.appendChild(spanStatus);
         li.appendChild(div1);
         li.appendChild(div2);
+        console.log(div2);
         upcomingMatchesSection.appendChild(li);
     });
 }
