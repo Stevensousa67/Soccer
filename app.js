@@ -84,16 +84,15 @@ app.use('/users', usersRouter);
 app.get('/checkAuth', async function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
-        console.log(user);
         try {
-            const query = `SELECT team_logo FROM "capstone_users" WHERE username = $1`;
-            const result = await client.query(query, [user.username]);
-            if (result.rows.length > 0) {
-                const logoUrl = result.rows[0].team_logo;
-                res.json({ isAuthenticated: true, logoUrl: logoUrl });
-            }
+            res.json({
+                isAuthenticated: true,
+                preferredTournament: user.tournament,
+                preferredTeam: user.team,
+                logoUrl: user.team_logo
+            });
         } catch (err) {
-            console.error('Error fetching team logo:', err);
+            console.error('Error constructing user preferences response:', err);
             res.json({ isAuthenticated: true });
         }
     } else {
@@ -104,21 +103,55 @@ app.get('/checkAuth', async function (req, res) {
 app.get('/getUserInfo', function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
-        console.log(user);
-        res.json({ username: user.username, password: user.password, tournament: user.tournament, team: user.team, team_logo: user.team_logo });
-    }else {
-        res.status(401).send('User not authenticated');
+        let year = new Date().getFullYear();
+        let tournament = `${year}_${user.tournament.toLowerCase().replace(/\s/g, '_')}`;
+        const query = `SELECT team_id FROM "${tournament}" WHERE name = $1`;
+        let teamId;
+
+        // Get team id from the database
+        const executeQuery = (year, tournament) => {
+            client.query(query, [user.team], (err, result) => {
+                if (err) {
+                    console.error('Error executing query:', err);
+                    console.log(`${year} ${user.tournament} not available. Trying previous year...`);
+                    year = year - 1;
+                    tournament = `${year}_${user.tournament.toLowerCase().replace(/\s/g, '_')}`;
+                    if (year >= 2023) {
+                        executeQuery(year, tournament);
+                    } else {
+                        res.status(500).json({ message: 'Tournament not found for any year' });
+                    }
+                } else {
+                    teamId = result.rows[0].team_id;
+
+                    const queryCountry = `SELECT country FROM tournaments WHERE tournament = $1`;
+                    client.query(queryCountry, [user.tournament], (err, result) => {
+                        if (err) {
+                            console.error('Error executing query:', err);
+                            res.status(500).json({ message: 'Error retrieving country code' });
+                        } else {
+                            res.json({ user: user, teamId: teamId, country: result.rows[0].country });
+                        }
+                    });
+                }
+            });
+        };
+
+        // Call the function to execute the query
+        executeQuery(year, tournament);
+    } else {
+        res.status(401).json({ message: 'Not authenticated' });
     }
 });
 
 app.post('/saveUser', function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
-        const { username, password, tournament, team, team_logo } = req.body;
+        const { username, password, tournament, team, team_logo, team_id } = req.body;
         console.log(req.body);
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        client.query('UPDATE capstone_users SET username = $1, password = $2, tournament = $3, team = $4, team_logo = $5 WHERE id = $6', [username, hashedPassword, tournament, team, team_logo, user.id], function (err) {
+        client.query('UPDATE capstone_users SET username = $1, password = $2, tournament = $3, team = $4, team_logo = $5, team_id = $6 WHERE id = $7', [username, hashedPassword, tournament, team, team_logo, team_id, user.id], function (err) {
             if (err) {
                 console.error('Error updating user:', err);
                 res.status(500).send('Failed to update user');

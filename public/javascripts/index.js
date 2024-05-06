@@ -1,12 +1,9 @@
 fetch('/checkAuth')
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         if (data.isAuthenticated) {
             document.getElementById('authButtons').classList.add('d-none'); // Hide buttons for non-authenticated users
             document.getElementById('loggedInButtons').classList.remove('d-none'); // Show buttons for authenticated users
-            //document.getElementById('scoreboardLink').classList.remove('d-none'); // Show Scoreboard link
-            //document.getElementById('myStatsLink').classList.remove('d-none'); // Show My Team's Stats link
             if (data.logoUrl) {
                 const logo = document.getElementById('logo');
                 logo.src = data.logoUrl; // Update logo src with team logo URL
@@ -162,16 +159,22 @@ function populateNewsSection(data) {
 }
 
 // Fetch upcoming matches API data
-fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/teams/7632/schedule')
+
+// fetch preferred tournament
+fetch('/getUserInfo')
+    .then(response => response.json())
+    .then(data => {
+        const country = data.country;
+        // get upcoming matches
+        return fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${country}.1/scoreboard`);
+    })
     .then(response => {
-        // Check if the response is successful
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json(); // Parse the JSON data
+        return response.json();
     })
     .then(data => {
-        // Call the function to populate the upcoming matches section with the fetched data
         populateUpcomingMatchesSection(data);
     })
     .catch(error => {
@@ -179,7 +182,114 @@ fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/teams/7632/sch
     });
 
 function populateUpcomingMatchesSection(data) {
-    console.log(data);
     // Get the upcoming matches section
+    const upcomingMatchesSection = document.getElementById('upcomingMatches');
+    // iterate over data.events
+    data.events.forEach((event, index) => {
+        // create a new li element
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center', 'flex-column'); // Add flex-column class for stacking divs vertically
 
+        // Create a new div element for the first row
+        const div1 = document.createElement('div');
+        div1.classList.add('text-center', 'mb-2'); // Add Bootstrap classes
+        // create img element for home team logo
+        const imgHomeLogo = document.createElement('img');
+        imgHomeLogo.src = event.competitions[0].competitors[0].team.logo;
+        imgHomeLogo.style.width = '40px';
+        imgHomeLogo.style.height = '40px';
+        // create span element for home team score, if available
+        const spanHomeScore = document.createElement('span');
+        spanHomeScore.textContent = event.competitions[0].competitors[0].score;
+        // create span element for the dash
+        const spanDash = document.createElement('span');
+        spanDash.textContent = '   -   ';
+        // create span element for away team score, if available
+        const spanAwayScore = document.createElement('span');
+        spanAwayScore.textContent = event.competitions[0].competitors[1].score;
+        // create img element for away team logo
+        const imgAwayLogo = document.createElement('img');
+        imgAwayLogo.src = event.competitions[0].competitors[1].team.logo;
+        imgAwayLogo.style.width = '40px';
+        imgAwayLogo.style.height = '40px';
+        // Append the elements to the first row div
+        div1.appendChild(imgHomeLogo);
+        div1.appendChild(spanHomeScore);
+        div1.appendChild(spanDash);
+        div1.appendChild(spanAwayScore);
+        div1.appendChild(imgAwayLogo);
+
+        // Create a new div element for the second row
+        const div2 = document.createElement('div');
+        div2.classList.add('text-center'); // Add Bootstrap classes
+        // create span element for the game date
+        const spanDate = document.createElement('span');
+        spanDate.textContent = event.date;
+        // create span element for the game location
+        const spanLocation = document.createElement('span');
+        spanLocation.textContent = event.venue.displayName;
+        // create span element for game status (if full time or not)
+        const spanStatus = document.createElement('span');
+        spanStatus.textContent = event.status.type.detail;
+        // Append the elements to the second row div
+        div2.appendChild(spanDate);
+        div2.appendChild(spanLocation);
+        div2.appendChild(spanStatus);
+
+        // Append the divs to the li
+        li.appendChild(div1);
+        li.appendChild(div2);
+
+        // Append the li element to the ul element
+        upcomingMatchesSection.appendChild(li);
+    });
 }
+
+// future implementation (make homepage display only preferred tournament standings and news, and preferred team's schedule):
+// // get preferred team's id and tournament country
+// fetch('/getUserInfo')
+//     .then(response => response.json())
+//     .then(data => {
+//         const teamId = data.teamId;
+//         const country = data.country;
+//         // get team's schedule
+//         return fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${country}.1/teams/${teamId}/schedule`);
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json(); // Parse the JSON data
+//     })
+//     .then(data => {
+//         console.log(data); // Log the parsed JSON data
+//     })
+//     .catch(error => {
+//         console.error('There was a problem with the fetch operation:', error);
+//     });
+
+// // Display the team's schedule
+// document.getElementById('upcomingGames');
+// // Loop through each game in the data and add to the upcoming games section
+// data.forEach((game, index) => {
+//     if (index === 0) return; // Skip the first iteration
+//     // Create a new li element
+//     console.log(game.date);
+//     const li = document.createElement('li');
+//     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+//     // Create a span element for the game date
+//     const spanDate = document.createElement('span');
+//     spanDate.textContent = game.date;
+//     // Create a span element for the game time
+//     const spanTime = document.createElement('span');
+//     spanTime.textContent = game.time;
+//     // Create a span element for the game opponent
+//     const spanOpponent = document.createElement('span');
+//     spanOpponent.textContent = game.opponent;
+//     // Append the span elements to the li element
+//     li.appendChild(spanDate);
+//     li.appendChild(spanTime);
+//     li.appendChild(spanOpponent);
+//     // Append the li element to the ul element
+//     ul.appendChild(li);
+// });
