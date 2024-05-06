@@ -1,3 +1,9 @@
+const countries = ['bra', 'usa', 'ger', 'eng', 'esp', 'ita', 'fra'];
+const randomIndex = Math.floor(Math.random() * countries.length);
+const randomCountry = countries[randomIndex];
+const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? 2024 : 2023;
+console.log(randomCountry, seasonYear)
+
 fetch('/checkAuth')
     .then(response => response.json())
     .then(data => {
@@ -32,7 +38,7 @@ fetch('/checkAuth')
     });
 
 // Fetch the Standings API data
-fetch('https://site.web.api.espn.com/apis/v2/sports/soccer/bra.1/standings?season=2024')
+fetch(`https://site.web.api.espn.com/apis/v2/sports/soccer/${randomCountry}.1/standings?season=${seasonYear}`)
     .then(response => {
         // Check if the response is successful
         if (!response.ok) {
@@ -49,9 +55,7 @@ fetch('https://site.web.api.espn.com/apis/v2/sports/soccer/bra.1/standings?seaso
     });
 
 function populateStandingsTable(data) {
-    // Get the table body
     const tableBody = document.getElementById('standings-table').getElementsByTagName('tbody')[0];
-
     // Loop through each team in the data and add to the table
     data.children[0].standings.entries.forEach((entry, index) => {
         const team = entry.team;
@@ -102,7 +106,7 @@ function populateStandingsTable(data) {
 }
 
 // Fetch News API data
-fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/bra.1/news')
+fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${randomCountry}.1/news`)
     .then(response => {
         // Check if the response is successful
         if (!response.ok) {
@@ -130,11 +134,17 @@ function populateNewsSection(data) {
         card.style.width = '100%';
         card.style.marginBottom = '2rem';
 
-        // Create an image element
-        const image = document.createElement('img');
-        image.classList.add('card-img-top', 'img-fluid');
-        image.src = article.images[0].url;
-        image.alt = 'News Image';
+        // Check if article.images exists and has at least one element
+        if (article.images && article.images.length > 0) {
+            // Create an image element
+            const image = document.createElement('img');
+            image.classList.add('card-img-top', 'img-fluid');
+            image.src = article.images[0].url;
+            image.alt = 'News Image';
+
+            // Append the image to the card
+            card.appendChild(image);
+        }
 
         // Create a card body
         const cardBody = document.createElement('div');
@@ -148,9 +158,8 @@ function populateNewsSection(data) {
         cardText.textContent = article.headline;
         cardText.style.textDecoration = 'none'; // Remove underline from link
 
-        // Append the elements to the card
+        // Append the elements to the card body
         cardBody.appendChild(cardText);
-        card.appendChild(image);
         card.appendChild(cardBody);
 
         // Append the card to the news section
@@ -159,15 +168,7 @@ function populateNewsSection(data) {
 }
 
 // Fetch upcoming matches API data
-
-// fetch preferred tournament
-fetch('/getUserInfo')
-    .then(response => response.json())
-    .then(data => {
-        const country = data.country;
-        // get upcoming matches
-        return fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${country}.1/scoreboard`);
-    })
+fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${randomCountry}.1/scoreboard`)
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
