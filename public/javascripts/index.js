@@ -199,14 +199,15 @@ function populateStandingsTable(data) {
         westernConferenceTitle.style.display = 'block';
         westernConferenceTable.style.display = 'block';
         easternConferenceTitle.style.display = 'block';
-        // Iterate over Eastern Conference
-        data.children[0].standings.entries.forEach((entry, index) => {
+
+        // Sort and iterate over Eastern Conference
+        data.children[0].standings.entries.sort((a, b) => a.stats[10].value - b.stats[10].value).forEach((entry, index) => {
             const row = createRow(entry);
             tableBody.appendChild(row);
         });
 
-        // Iterate over Western Conference
-        data.children[1].standings.entries.forEach((entry, index) => {
+        // Sort and iterate over Western Conference
+        data.children[1].standings.entries.sort((a, b) => a.stats[10].value - b.stats[10].value).forEach((entry, index) => {
             const row = createRow(entry);
             secondConferenceTableBody.appendChild(row);
         });
