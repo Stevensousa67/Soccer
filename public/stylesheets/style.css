@@ -3,10 +3,11 @@
 .wins-cell,
 .draws-cell,
 .losses-cell,
-.goal-difference-cell {
+.goal-difference-cell  {
   /* text-align: center; */
   /* padding-left: 10px; */
   font-size: 14px;
+  width: 1%;
 }
 
 .team-cell{

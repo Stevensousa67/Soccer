@@ -225,7 +225,6 @@ function populateStandingsTable(data) {
     }
 }
 
-
 function populateNewsSection(data) {
     const newsSection = document.getElementById('news-section');
     newsSection.innerHTML = ''; // Clear previous data
