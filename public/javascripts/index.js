@@ -140,11 +140,16 @@ function fetchRandomCountryData() {
 
 function populateStandingsTable(data) {
     const tableBody = document.getElementById('standings-table').getElementsByTagName('tbody')[0];
+    const secondConferenceTableBody = document.getElementById('second-conference-table').getElementsByTagName('tbody')[0];
+
     tableBody.innerHTML = ''; // Clear previous data
-    data.children[0].standings.entries.forEach((entry, index) => {
+    secondConferenceTableBody.innerHTML = ''; // Clear previous data
+
+    // Function to create a row
+    function createRow(entry) {
         const team = entry.team;
         const stats = entry.stats;
-        // Create a new row and cells
+
         const row = document.createElement('tr');
         const rankCell = document.createElement('td');
         rankCell.classList.add('rank-cell');
@@ -162,7 +167,7 @@ function populateStandingsTable(data) {
         lossesCell.classList.add('losses-cell');
         const goalDifferenceCell = document.createElement('td');
         goalDifferenceCell.classList.add('goal-difference-cell');
-        // Set the text of the cells
+
         rankCell.textContent = stats[10].value;
         teamCell.textContent = team.displayName;
         pointsCell.textContent = stats[3].value;
@@ -171,7 +176,7 @@ function populateStandingsTable(data) {
         drawsCell.textContent = stats[6].value;
         lossesCell.textContent = stats[1].value;
         goalDifferenceCell.textContent = stats[2].value;
-        // Append the cells to the row
+
         row.appendChild(rankCell);
         row.appendChild(teamCell);
         row.appendChild(matchesPlayedCell);
@@ -180,10 +185,45 @@ function populateStandingsTable(data) {
         row.appendChild(drawsCell);
         row.appendChild(lossesCell);
         row.appendChild(goalDifferenceCell);
-        // Append the row to the table body
-        tableBody.appendChild(row);
-    });
+
+        return row;
+    }
+
+    const westernConferenceTitle = document.getElementById('western-conference-title');
+    const easternConferenceTitle = document.getElementById('eastern-conference-title');
+    const westernConferenceTable = document.getElementById('second-conference-table');
+
+    // Check if the league is USA
+    if (data.abbreviation === "MLS") {
+        // Show conference titles
+        westernConferenceTitle.style.display = 'block';
+        westernConferenceTable.style.display = 'block';
+        easternConferenceTitle.style.display = 'block';
+        // Iterate over Eastern Conference
+        data.children[0].standings.entries.forEach((entry, index) => {
+            const row = createRow(entry);
+            tableBody.appendChild(row);
+        });
+
+        // Iterate over Western Conference
+        data.children[1].standings.entries.forEach((entry, index) => {
+            const row = createRow(entry);
+            secondConferenceTableBody.appendChild(row);
+        });
+    } else {
+        // Hide conference titles and second table
+        westernConferenceTitle.style.display = 'none';
+        westernConferenceTable.style.display = 'none';
+        easternConferenceTitle.style.display = 'none';
+
+        // For other leagues, populate a single table
+        data.children[0].standings.entries.forEach((entry, index) => {
+            const row = createRow(entry);
+            tableBody.appendChild(row);
+        });
+    }
 }
+
 
 function populateNewsSection(data) {
     const newsSection = document.getElementById('news-section');
