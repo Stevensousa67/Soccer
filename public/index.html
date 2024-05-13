@@ -12,16 +12,13 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-expand-lg bg-white">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-white">
+  <div class="container-fluid">
+    <!-- League Logos -->
+    <div class="d-flex">
       <a class="navbar-brand" href="/"><img id="logo" src="/images/images.png" alt="Home"
           style="width: 35px; height: 35px;"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <!-- League Logos -->
-      <div class="d-flex justify-content-center align-items-center">
+      <div class="d-lg-flex">
         <img class="league-logo" src="/images/bra-serie-a.png" alt="BRA" onclick="fetchLeagueData('bra')"
           style="width: 35px; height: 35px">
         <img class="league-logo" src="/images/mls.png" alt="USA" onclick="fetchLeagueData('usa')"
@@ -36,24 +33,34 @@
           style="width: 35px; height: 35px">
         <img class="league-logo" src="/images/laliga.png" alt="SPA" onclick="fetchLeagueData('esp')"
           style="width: 35px; height: 35px">
-      </div>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-        <!-- Buttons for when user is not signed in -->
-        <div class="navbar-nav ml-auto" id="authButtons">
-          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
-            onclick="window.location.href='/login'">Login</button>
-          <button type="button" class="btn btn-success ml-1 mx-1" onclick="window.location.href='/signUp'">Sign
-            Up</button>
-        </div>
-        <!-- Buttons for when user is signed in (initially hidden) -->
-        <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
-          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
-            onclick="window.location.href='/myProfile'">My Profile</button>
-          <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
-        </div>
+        <!-- Add other league logos here -->
       </div>
     </div>
-  </nav>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <!-- Buttons for when user is not signed in -->
+      <div class="navbar-nav ml-auto" id="authButtons">
+        <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+          onclick="window.location.href='/login'">Login</button>
+        <button type="button" class="btn btn-success ml-1 mx-1" onclick="window.location.href='/signUp'">Sign
+          Up</button>
+      </div>
+      <!-- Buttons for when user is signed in (initially hidden) -->
+      <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
+        <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+          onclick="window.location.href='/myProfile'">My Profile</button>
+        <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
 
   <div class="container">
     <div class="row">
@@ -107,7 +114,7 @@
       <!-- Second column for upcoming games -->
       <div class="col-lg-4 col-md order-2 order-md-2 order-lg-2">
         <div class="d-flex justify-content-center align-items-center">
-          <h1>Today's Games</h1>
+          <h1>This Week's Games</h1>
         </div>
         <ul class="list-group list-group-flush" id="upcomingMatches">
           <!-- List items will be dynamically added here -->
@@ -130,8 +137,7 @@
     <div class="container">
       <p class="mb-1">&copy; 2024 Created by: <a href="https://github.com/Stevensousa67"
           class="text-decoration-none">Steven
-          Sousa</a>, <a href="https://github.com/j5evans" class="text-decoration-none">James Evans</a>, <a
-          href="https://github.com/zachhill7714" class="text-decoration-none">Zarchary Hill</a>. All Rights Reserved.
+          Sousa</a>. All Rights Reserved.
       </p>
     </div>
   </footer>
