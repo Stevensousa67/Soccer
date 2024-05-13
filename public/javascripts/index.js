@@ -2,10 +2,20 @@ const countries = ['bra', 'usa', 'ger', 'eng', 'esp', 'ita', 'fra'];
 const randomIndex = Math.floor(Math.random() * countries.length);
 const randomCountry = countries[randomIndex];
 const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? 2024 : 2023;
+var today = new Date();
+var lastSevenDays = [];
+// Loop through the last seven days, starting with yesterday
+for (var i = 1; i <= 7; i++) {
+    var day = new Date(today);
+    day.setDate(today.getDate() - i);
+    lastSevenDays.push(day.toISOString().slice(0, 10).replace(/-/g, ''));
+}
 
 // Function to fetch data for the selected league on navbar click
 function fetchLeagueData(league) {
     const seasonYear = (league === 'usa' || league === 'bra') ? 2024 : 2023;
+    const previousMatchesSection = document.getElementById('previousMatches');
+    previousMatchesSection.innerHTML = ''; // Clear previous data
     fetchPreferredLeagueData(league, seasonYear);
 }
 
@@ -89,6 +99,24 @@ function fetchPreferredLeagueData(league, userSeasonYear) {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
+
+    // Fetch previous matches for the preferred league
+    async function fetchPreviousMatches() {
+        for (let date = 0; date < lastSevenDays.length; date++) {
+            try {
+                const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${league}.1/scoreboard?dates=${lastSevenDays[date]}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                populatePreviousMatchesSection(data);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+    }
+    fetchPreviousMatches();
+
 }
 
 function fetchRandomCountryData() {
@@ -136,6 +164,23 @@ function fetchRandomCountryData() {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
+
+    // Fetch previous matches for the random country
+    for (let date = 0; date < lastSevenDays.length; date++) {
+        fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${randomCountry}.1/scoreboard?dates=${lastSevenDays[date]}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                populatePreviousMatchesSection(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
 }
 
 function populateStandingsTable(data) {
@@ -264,8 +309,8 @@ function populateUpcomingMatchesSection(data) {
         div1.classList.add('text-center', 'mb-2');
         const imgHomeLogo = document.createElement('img');
         imgHomeLogo.src = event.competitions[0].competitors[0].team.logo;
-        imgHomeLogo.style.width = '40px';
-        imgHomeLogo.style.height = '40px';
+        imgHomeLogo.style.width = '30px';
+        imgHomeLogo.style.height = '30px';
         const spanHomeScore = document.createElement('span');
         spanHomeScore.textContent = event.competitions[0].competitors[0].score;
         const spanDash1 = document.createElement('span');
@@ -276,8 +321,8 @@ function populateUpcomingMatchesSection(data) {
         spanAwayScore.textContent = event.competitions[0].competitors[1].score;
         const imgAwayLogo = document.createElement('img');
         imgAwayLogo.src = event.competitions[0].competitors[1].team.logo;
-        imgAwayLogo.style.width = '40px';
-        imgAwayLogo.style.height = '40px';
+        imgAwayLogo.style.width = '30px';
+        imgAwayLogo.style.height = '30px';
         div1.appendChild(imgHomeLogo);
         div1.appendChild(spanHomeScore);
         div1.appendChild(spanDash1);
@@ -295,5 +340,55 @@ function populateUpcomingMatchesSection(data) {
         li.appendChild(div1);
         li.appendChild(div2);
         upcomingMatchesSection.appendChild(li);
+    });
+}
+
+function populatePreviousMatchesSection(data) {
+    const previousMatchesSection = document.getElementById('previousMatches');
+    data.events.forEach((event, index) => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center', 'flex-column');
+        const div1 = document.createElement('div');
+        div1.classList.add('text-center', 'mb-2');
+        const imgHomeLogo = document.createElement('img');
+        imgHomeLogo.src = event.competitions[0].competitors[0].team.logo;
+        imgHomeLogo.style.width = '30px';
+        imgHomeLogo.style.height = '30px';
+        const spanHomeScore = document.createElement('span');
+        spanHomeScore.textContent = event.competitions[0].competitors[0].score;
+        const spanDash1 = document.createElement('span');
+        spanDash1.textContent = '   -   ';
+        const spanDash2 = document.createElement('span');
+        spanDash2.textContent = '   -   ';
+        const spanAwayScore = document.createElement('span');
+        spanAwayScore.textContent = event.competitions[0].competitors[1].score;
+        const imgAwayLogo = document.createElement('img');
+        imgAwayLogo.src = event.competitions[0].competitors[1].team.logo;
+        imgAwayLogo.style.width = '30px';
+        imgAwayLogo.style.height = '30px';
+        div1.appendChild(imgHomeLogo);
+        div1.appendChild(spanHomeScore);
+        div1.appendChild(spanDash1);
+        div1.appendChild(spanAwayScore);
+        div1.appendChild(imgAwayLogo);
+        const div2 = document.createElement('div');
+        div2.classList.add('text-center');
+        const spanLocation = document.createElement('span');
+        spanLocation.textContent = event.venue.displayName;
+        const spanStatus = document.createElement('span');
+        spanStatus.textContent = event.status.type.detail;
+        div2.appendChild(spanLocation);
+        div2.appendChild(spanDash2);
+        div2.appendChild(spanStatus);
+        const div3 = document.createElement('div');
+        div3.classList.add('text-center');
+        const spanDate = document.createElement('span');
+        date = new Date(event.date);
+        spanDate.textContent = date.toLocaleDateString();
+        div3.appendChild(spanDate);
+        li.appendChild(div1);
+        li.appendChild(div2);
+        li.appendChild(div3);
+        previousMatchesSection.appendChild(li);
     });
 }
