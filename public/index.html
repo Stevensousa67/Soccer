@@ -12,55 +12,60 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-expand-lg bg-white">
-    <div class="container-fluid align-items-center">
-      <!-- League Logos -->
-      <div class="d-flex align-items-center">
-        <a class="navbar-brand align-self-start" href="/"><img id="logo" src="/images/images.png" alt="Home"
-            style="width: 35px; height: 35px;"></a>
-        <div class="d-lg-flex align-items-center">
-          <img class="league-logo" src="/images/bra-serie-a.png" alt="BRA" onclick="fetchLeagueData('bra')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/mls.png" alt="USA" onclick="fetchLeagueData('usa')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/bundesliga.png" alt="GER" onclick="fetchLeagueData('ger')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/premier.png" alt="ENG" onclick="fetchLeagueData('eng')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/ligue1.png" alt="FRA" onclick="fetchLeagueData('fra')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/italia-serie-a.png" alt="ITA" onclick="fetchLeagueData('ita')"
-            style="width: 35px; height: 35px">
-          <img class="league-logo" src="/images/laliga.png" alt="SPA" onclick="fetchLeagueData('esp')"
-            style="width: 35px; height: 35px">
-          <!-- Add other league logos here -->
-        </div>
-      </div>
+ <nav class="navbar navbar-expand-lg bg-white">
+    <div class="container-fluid">
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="/">
+            <img id="logo" src="/images/images.png" alt="Home" style="width: 35px; height: 35px;">
+        </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <!-- League Logos -->
+        <div class="justify-content-center align-items-center">
+            <img class="league-logo" src="/images/bra-serie-a.png" alt="BRA" onclick="fetchLeagueData('bra')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/mls.png" alt="USA" onclick="fetchLeagueData('usa')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/bundesliga.png" alt="GER" onclick="fetchLeagueData('ger')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/premier.png" alt="ENG" onclick="fetchLeagueData('eng')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/ligue1.png" alt="FRA" onclick="fetchLeagueData('fra')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/italia-serie-a.png" alt="ITA" onclick="fetchLeagueData('ita')"
+                style="width: 35px; height: 35px">
+            <img class="league-logo" src="/images/laliga.png" alt="SPA" onclick="fetchLeagueData('esp')"
+                style="width: 35px; height: 35px">
+            <!-- Add other league logos here -->
+        </div>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-        <!-- Buttons for when user is not signed in -->
-        <div class="navbar-nav ml-auto" id="authButtons">
-          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
-            onclick="window.location.href='/login'">Login</button>
-          <button type="button" class="btn btn-success ml-1 mx-1" onclick="window.location.href='/signUp'">Sign
-            Up</button>
+        <!-- Dropdown Burger -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            <!-- Buttons for when user is not signed in -->
+            <div class="navbar-nav ml-auto" id="authButtons">
+                <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+                    onclick="window.location.href='/login'">Login</button>
+                <button type="button" class="btn btn-success ml-1 mx-1"
+                    onclick="window.location.href='/signUp'">Sign Up</button>
+            </div>
+            <!-- Buttons for when user is signed in (initially hidden) -->
+            <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
+                <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
+                    onclick="window.location.href='/myProfile'">My Profile</button>
+                <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
+            </div>
         </div>
-        <!-- Buttons for when user is signed in (initially hidden) -->
-        <div class="navbar-nav ml-auto d-none" id="loggedInButtons">
-          <button type="button" class="btn btn-primary mr-1 mx-1 mb-lg-0 mb-2"
-            onclick="window.location.href='/myProfile'">My Profile</button>
-          <button type="button" class="btn btn-danger ml-1 mx-1" id="logOut">Log Out</button>
-        </div>
-      </div>
     </div>
-  </nav>
+</nav>
 
-  
+
+
+
   <div class="container">
     <div class="row">
       <!-- First column for standings -->
