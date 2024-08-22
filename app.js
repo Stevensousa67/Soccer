@@ -14,7 +14,7 @@ var flash = require('express-flash');
 
 const { Client } = require('pg');
 const client = new Client({
-    connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL,
 });
 client.connect();
 
@@ -238,6 +238,12 @@ app.get('/api/:tournamentName', async (req, res) => {
         console.error(err);
         res.status(500).send('Server error');
     }
+});
+
+// Start the server and log a message
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 
 
