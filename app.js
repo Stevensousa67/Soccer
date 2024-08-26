@@ -76,7 +76,8 @@ passport.deserializeUser(function (id, done) {
 app.use(session({
     store: new pgSession({
         pool: client, // Using the existing PostgreSQL client
-        tableName: 'session' // Optionally provide a table name, default is 'session'
+        tableName: 'session', // Optionally provide a table name, default is 'session'
+        createTableIfMissing: true // Automatically create the table if it doesn't exist
     }),
     secret: 'WebDev', // Change this to a more secure secret
     resave: false,
