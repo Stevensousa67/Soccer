@@ -11,12 +11,22 @@ var app = express();
 
 var session = require('express-session');
 var flash = require('express-flash');
+var pgSession = require('connect-pg-simple')(session);
 
 const { Client } = require('pg');
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    },
 });
-client.connect();
+client.connect(err => {
+    if (err) {
+        console.error('Connection error:', err.stack);
+    } else {
+        console.log('Connected to PostgreSQL database');
+    }
+});
 
 var bcrypt = require('bcryptjs');
 var passport = require('passport');
@@ -29,13 +39,13 @@ passport.use(new LocalStrategy({
     function (username, password, done) {
         client.query('SELECT * FROM capstone_users WHERE username = $1', [username], function (err, result) {
             if (err) {
-                console.log("SQL error");
-                return done(null, false, { message: 'sql error' });
+                console.log("SQL error:", err);
+                return done(null, false, { message: 'SQL error' });
             }
             if (result.rows.length > 0) {
                 let matched = bcrypt.compareSync(password, result.rows[0].password);
                 if (matched) {
-                    console.log("Successful login, ", result.rows[0]);
+                    console.log("Successful login,", result.rows[0]);
                     return done(null, result.rows[0]);
                 }
             }
@@ -50,10 +60,9 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    // Query the user from the database using the ID
     client.query('SELECT * FROM capstone_users WHERE id = $1', [id], function (err, result) {
         if (err) {
-            console.log("SQL error");
+            console.log("SQL error:", err);
             return done(err);
         }
         if (result.rows.length > 0) {
@@ -65,9 +74,14 @@ passport.deserializeUser(function (id, done) {
 });
 
 app.use(session({
-    secret: 'WebDev',
+    store: new pgSession({
+        pool: client, // Using the existing PostgreSQL client
+        tableName: 'session' // Optionally provide a table name, default is 'session'
+    }),
+    secret: 'WebDev', // Change this to a more secure secret
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    cookie: { secure: false } // Set secure: true in production with HTTPS
 }));
 
 app.use(flash());
@@ -85,7 +99,6 @@ app.get('/checkAuth', async function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
         try {
-            // fetch country code for user's preferred league
             const query = 'SELECT country FROM tournaments WHERE tournament = $1';
             const result = await client.query(query, [user.tournament]);
             const userCountry = result.rows[0].country;
@@ -140,15 +153,12 @@ app.get('/logout', function (req, res) {
     });
 });
 
-
 app.get('/signUp', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'signUp.html'));
 });
 
 app.post('/signUp', async function (req, res) {
     try {
-
-        // Check if db table exists
         const createTableQuery = `CREATE TABLE IF NOT EXISTS capstone_users (
             id UUID PRIMARY KEY NOT NULL,
             username VARCHAR(50) NOT NULL,
@@ -160,22 +170,18 @@ app.post('/signUp', async function (req, res) {
         )`;
         await client.query(createTableQuery);
 
-        // If table exists, create user
         const { username, password, tournament, team, team_logo } = req.body;
 
-        // check if username exists in database
         const result = await client.query('SELECT * FROM capstone_users WHERE username = $1', [username]);
         if (result.rows.length > 0) {
             req.flash('error', 'Username already exists');
             res.redirect('/signUp');
             return;
         }
-        // insert new user into database
         const hashedPassword = bcrypt.hashSync(password, 10);
         const id = uuid();
         await client.query('INSERT INTO capstone_users (id, username, password, tournament, team, team_logo, account_created_on) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE)', [id, username, hashedPassword, tournament, team, team_logo]);
 
-        // log new user in and redirect to home page
         const user = { id, username, password: hashedPassword, tournament, team };
         req.login(user, function (err) {
             if (err) {
@@ -205,13 +211,13 @@ app.post('/login', passport.authenticate('local', {
 app.get('/myProfile', function (req, res) {
     if (req.isAuthenticated()) {
         res.sendFile(path.join(__dirname, 'public', 'myProfile.html'));
-    }else {
+    } else {
         res.redirect('/login');
     }
 });
 
 app.get('/standings', function (req, res) {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         res.sendFile(path.join(__dirname, 'public', 'scoreboard.html'));
     } else {
         res.redirect('/login');
@@ -239,12 +245,5 @@ app.get('/api/:tournamentName', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-
-// Start the server and log a message
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
-
 
 module.exports = app;
