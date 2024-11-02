@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 const fetch = require('node-fetch');
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 
 const client = new Client({
     connectionString: process.env.RENDER_URL,
