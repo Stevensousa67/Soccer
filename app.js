@@ -37,7 +37,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 },
     function (username, password, done) {
-        client.query('SELECT * FROM capstone_users WHERE username = $1', [username], function (err, result) {
+        client.query('SELECT * FROM soccer.capstone_users WHERE username = $1', [username], function (err, result) {
             if (err) {
                 console.log("SQL error:", err);
                 return done(null, false, { message: 'SQL error' });
@@ -60,7 +60,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    client.query('SELECT * FROM capstone_users WHERE id = $1', [id], function (err, result) {
+    client.query('SELECT * FROM soccer.capstone_users WHERE id = $1', [id], function (err, result) {
         if (err) {
             console.log("SQL error:", err);
             return done(err);
@@ -76,7 +76,7 @@ passport.deserializeUser(function (id, done) {
 app.use(session({
     store: new pgSession({
         pool: client, // Using the existing PostgreSQL client
-        tableName: 'session', // Optionally provide a table name, default is 'session'
+        tableName: 'soccer.session', // Optionally provide a table name, default is 'session'
         createTableIfMissing: true // Automatically create the table if it doesn't exist
     }),
     secret: 'WebDev', // Change this to a more secure secret
@@ -100,7 +100,7 @@ app.get('/checkAuth', async function (req, res) {
     if (req.isAuthenticated()) {
         const user = req.user;
         try {
-            const query = 'SELECT country FROM tournaments WHERE tournament = $1';
+            const query = 'SELECT country FROM soccer.tournaments WHERE tournament = $1';
             const result = await client.query(query, [user.tournament]);
             const userCountry = result.rows[0].country;
             res.json({
@@ -135,7 +135,7 @@ app.post('/saveUser', function (req, res) {
         console.log(req.body);
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        client.query('UPDATE capstone_users SET username = $1, password = $2, tournament = $3, team = $4, team_logo = $5 WHERE id = $6', [username, hashedPassword, tournament, team, team_logo, user.id], function (err) {
+        client.query('UPDATE soccer.capstone_users SET username = $1, password = $2, tournament = $3, team = $4, team_logo = $5 WHERE id = $6', [username, hashedPassword, tournament, team, team_logo, user.id], function (err) {
             if (err) {
                 console.error('Error updating user:', err);
                 res.status(500).send('Failed to update user');
@@ -160,7 +160,7 @@ app.get('/signUp', function (req, res) {
 
 app.post('/signUp', async function (req, res) {
     try {
-        const createTableQuery = `CREATE TABLE IF NOT EXISTS capstone_users (
+        const createTableQuery = `CREATE TABLE IF NOT EXISTS soccer.capstone_users (
             id UUID PRIMARY KEY NOT NULL,
             username VARCHAR(50) NOT NULL,
             password VARCHAR(100) NOT NULL,
@@ -173,7 +173,7 @@ app.post('/signUp', async function (req, res) {
 
         const { username, password, tournament, team, team_logo } = req.body;
 
-        const result = await client.query('SELECT * FROM capstone_users WHERE username = $1', [username]);
+        const result = await client.query('SELECT * FROM soccer.capstone_users WHERE username = $1', [username]);
         if (result.rows.length > 0) {
             req.flash('error', 'Username already exists');
             res.redirect('/signUp');
@@ -181,7 +181,7 @@ app.post('/signUp', async function (req, res) {
         }
         const hashedPassword = bcrypt.hashSync(password, 10);
         const id = uuid();
-        await client.query('INSERT INTO capstone_users (id, username, password, tournament, team, team_logo, account_created_on) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE)', [id, username, hashedPassword, tournament, team, team_logo]);
+        await client.query('INSERT INTO soccer.capstone_users (id, username, password, tournament, team, team_logo, account_created_on) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE)', [id, username, hashedPassword, tournament, team, team_logo]);
 
         const user = { id, username, password: hashedPassword, tournament, team };
         req.login(user, function (err) {
