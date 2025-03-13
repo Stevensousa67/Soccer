@@ -13,7 +13,7 @@ for (var i = 1; i <= 7; i++) {
 
 // Function to fetch data for the selected league on navbar click
 function fetchLeagueData(league) {
-    const seasonYear = (league === 'usa' || league === 'bra') ? 2024 : 2023;
+    const seasonYear = (league === 'usa' || league === 'bra') ? `${new Date().getFullYear()}` : `${new Date().getFullYear() - 1}`;
     const previousMatchesSection = document.getElementById('previousMatches');
     previousMatchesSection.innerHTML = ''; // Clear previous data
     fetchPreferredLeagueData(league, seasonYear);
@@ -44,7 +44,7 @@ fetch('/checkAuth')
             });
 
             const preferredCountry = data.preferredCountry;
-            const userSeasonYear = (data.preferredCountry === 'usa' || data.preferredCountry === 'bra') ? 2024 : 2023;
+            const userSeasonYear = (data.preferredCountry === 'usa' || data.preferredCountry === 'bra') ? `${new Date().getFullYear()}` : `${new Date().getFullYear() - 1}`;
             fetchPreferredLeagueData(preferredCountry, userSeasonYear);
         } else {
             document.getElementById('authButtons').classList.remove('d-none'); // Show buttons for non-authenticated users
