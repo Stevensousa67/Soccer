@@ -227,10 +227,12 @@ app.get('/standings', function (req, res) {
 
 app.get('/api/tournaments', async (req, res) => {
     try {
-        const result = await client.query('SELECT tournament, logo FROM tournaments');
+        console.log('Fetching tournaments from "soccer"."tournaments"');
+        const result = await pool.query('SELECT tournament, logo FROM "soccer"."tournaments"');
+        console.log('Tournaments fetched:', result.rows);
         res.json(result.rows);
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching tournaments:', err.stack);
         res.status(500).send('Server error');
     }
 });
@@ -238,11 +240,13 @@ app.get('/api/tournaments', async (req, res) => {
 app.get('/api/:tournamentName', async (req, res) => {
     const tournamentName = req.params.tournamentName;
     try {
-        const query = `SELECT name, logo FROM "${tournamentName}"`;
-        const result = await client.query(query);
+        console.log(`Fetching teams from "soccer"."${tournamentName}"`);
+        const query = `SELECT name, logo FROM "soccer"."${tournamentName}"`;
+        const result = await pool.query(query);
+        console.log(`Teams fetched for ${tournamentName}:`, result.rows);
         res.json(result.rows);
     } catch (err) {
-        console.error(err);
+        console.error(`Error fetching teams for ${tournamentName}:`, err.stack);
         res.status(500).send('Server error');
     }
 });
