@@ -1,7 +1,7 @@
 const countries = ['bra', 'usa', 'ger', 'eng', 'esp', 'ita', 'fra'];
 const randomIndex = Math.floor(Math.random() * countries.length);
 const randomCountry = countries[randomIndex];
-const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? `${Date().getFullYear}` : `${ Date().getFullYear} - 1`;
+const seasonYear = (randomCountry === 'usa' || randomCountry === 'bra') ? `${new Date().getFullYear()}` : `${new Date().getFullYear() - 1}`;
 var today = new Date();
 var lastSevenDays = [];
 // Loop through the last seven days, starting with yesterday
