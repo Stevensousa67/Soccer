@@ -228,7 +228,7 @@ app.get('/standings', function (req, res) {
 app.get('/api/tournaments', async (req, res) => {
     try {
         console.log('Fetching tournaments from "soccer"."tournaments"');
-        const result = await pool.query('SELECT tournament, logo FROM "soccer"."tournaments"');
+        const result = await client.query('SELECT tournament, logo FROM "soccer"."tournaments"');
         console.log('Tournaments fetched:', result.rows);
         res.json(result.rows);
     } catch (err) {
@@ -242,7 +242,7 @@ app.get('/api/:tournamentName', async (req, res) => {
     try {
         console.log(`Fetching teams from "soccer"."${tournamentName}"`);
         const query = `SELECT name, logo FROM "soccer"."${tournamentName}"`;
-        const result = await pool.query(query);
+        const result = await client.query(query);
         console.log(`Teams fetched for ${tournamentName}:`, result.rows);
         res.json(result.rows);
     } catch (err) {
