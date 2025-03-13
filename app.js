@@ -75,14 +75,15 @@ passport.deserializeUser(function (id, done) {
 
 app.use(session({
     store: new pgSession({
-        pool: client, // Using the existing PostgreSQL client
-        tableName: 'soccer.session', // Optionally provide a table name, default is 'session'
-        createTableIfMissing: true // Automatically create the table if it doesn't exist
+        pool: client,              
+        schemaName: 'soccer',      
+        tableName: 'session',      
+        createTableIfMissing: true
     }),
-    secret: 'WebDev', // Change this to a more secure secret
+    secret: 'WebDev',              
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set secure: true in production with HTTPS
+    cookie: { secure: false }
 }));
 
 app.use(flash());
