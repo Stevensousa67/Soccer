@@ -1,13 +1,17 @@
 # Soccer
-This repository the Capstone project for my COMP335 - Web Application Development - course at Bridgewater State University.
 
-Link to render: https://soccer-s4y4.onrender.com
+Live Link: https://soccer.stevensousa.com
 
-This project aims to deliver soccer tournament standings, upcoming games, and news to users. 
+# Description
+A full-stack Node.js/Express app with GCP Cloud SQL (PostgreSQL), delivering real-time soccer updates via ESPN APIs. Users can create accounts with Passport auth, choose from 7 tournmanets and their teams (dynamically linked dropdowns), and view tailored standings, schedules, and news. Content auto-refreshes on login; logged-out users see a random tournament. Built to scale for more leagues.
 
-This project works in 2 ways: 
+# Tech Stack
 
-    1) Users who don't have an account will be limited to the main page where they will see standings, news, and upcoming games for random tournaments.
-    2) Users who sign up will have a main page tailored to their preferred tournament such as standings, news and upcoming games for their preferred team.
+Node.js, Express.js, GCP Cloud SQL (PostgreSQL), HTML, CSS, JS, Bootstrap, and ESPN APIs
 
-I hope you enjoy this preliminary project. 
+# Key Features
+
+- Pulls live data from ESPN APIs: standings, game schedules (current score, location, time), and news for 7 tournaments.
+- Passport auth for secure user login and account management.
+- Dynamic tournament/team selection with real-time content updates.
+- Random tournament display for logged-out users.
